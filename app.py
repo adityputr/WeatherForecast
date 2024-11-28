@@ -1,13 +1,12 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import joblib
 
 # Memuat model dari file .sav
 model = joblib.load('weather_predict_model.sav')
 
 # Judul aplikasi
-st.title('Prediksi Cuaca : 🌨️ atau 🌤️?')
+st.title('Prediksi Cuaca: 🌨️ atau 🌤️?')
 
 # Input dari pengguna
 temperature = st.number_input('Enter Temperature (°C)', min_value=-50.0, max_value=50.0, value=18.0)
@@ -23,8 +22,19 @@ input_data = pd.DataFrame([[temperature, humidity, wind_speed, cloud_cover, pres
 # Prediksi berdasarkan input
 prediction = model.predict(input_data)
 
-# Menampilkan hasil prediksi
+# Menampilkan hasil prediksi dengan tampilan besar dan center
 if prediction[0] == 1:
-    st.write("**Prediksi: Rain**")
+    result_text = "🌨️ Rain 🌨️"
+    color = "blue"
 else:
-    st.write("**Prediksi: No Rain**")
+    result_text = "🌤️ No Rain 🌤️"
+    color = "green"
+
+st.markdown(
+    f"""
+    <div style="text-align: center; margin-top: 50px;">
+        <h1 style="font-size: 60px; color: {color};">{result_text}</h1>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
